@@ -26,7 +26,7 @@ public class AlunoService implements IAlunoService {
     }
 
     @Override
-    public void atualizarAluno(Aluno aluno) {
+    public void atualizarAluno() {
         if (repository.buscarPorCpf(aluno.getCpf()) == null) {
             throw new IllegalArgumentException("Aluno não encontrado");
         }
@@ -49,5 +49,8 @@ public class AlunoService implements IAlunoService {
 
     public void cadastrar(Aluno aluno) {
 
+    }
+
+    public void atualizarAluno() {
     }
 }

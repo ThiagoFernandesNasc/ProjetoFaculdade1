@@ -1,23 +1,25 @@
-package view;
-
 import entities.*;
+import interfaces.services.IAlunoService;
 import repositories.*;
 import services.*;
 import java.time.*;
 import java.util.*;
-import java.util.stream.*;
 
-public class Main {
-    private static final Scanner scanner = new Scanner(System.in);
+public static class main {
+    static {
+        new Scanner(System.in);
+    }
+
     private static final AlunoService alunoService = new AlunoService(new AlunoRepository());
     private static final ProfessorService professorService = new ProfessorService(new ProfessorRepository());
     private static final ModalidadeService modalidadeService = new ModalidadeService(new ModalidadeRepository());
-    private static final TurmaService turmaService = new TurmaService(
-            new TurmaRepository(),
-            alunoService.getRepository(),
-            professorService.getRepository(),
-            modalidadeService.getRepository()
-    );
+
+    static {
+        new TurmaRepository();
+        alunoService.getRepository();
+        professorService.getRepository();
+        modalidadeService.getRepository();
+    }
 
     public static void main(String[] args) {
         exibirMenuPrincipal();
@@ -32,19 +34,24 @@ public class Main {
             System.out.println("4. Gerenciar Turmas");
             System.out.println("0. Sair");
 
-            int opcao = lerInt("Escolha uma opção", 0, 4);
+            int opcao = lerInt(4);
 
             switch (opcao) {
                 case 1 -> gerenciarAlunos();
                 case 2 -> gerenciarProfessores();
                 case 3 -> gerenciarModalidades();
-                case 4 -> gerenciarTurmas();
-                case 0 -> {
+                case 4 -> {
+                    gerenciarTurmas();
+
                     System.out.println("Saindo do sistema...");
                     return;
                 }
             }
+            }
         }
+    }
+
+    private static void gerenciarTurmas() {
     }
 
     // Métodos para Gerenciamento de Alunos (já corretos)
@@ -58,15 +65,16 @@ public class Main {
             System.out.println("5. Listar Alunos");
             System.out.println("0. Voltar");
 
-            int opcao = lerInt("Escolha uma opção", 0, 5);
+            int opcao = lerInt(5);
             if (opcao == 0) return;
 
             try {
                 switch (opcao) {
-                    case 1 -> cadastrarAluno();
+                    case 1 -> cadastrarAluno(alunoService);
                     case 2 -> buscarAluno();
-                    case 3 -> atualizarAluno();
-                    case 4 -> removerAluno();
+                    IAlunoService alunoService = null;
+                    case 3 -> alunoService.atualizarAluno();
+                    case 4 -> alunoService.removerAluno();
                     case 5 -> listarAlunos();
                 }
             } catch (Exception e) {
@@ -75,14 +83,20 @@ public class Main {
         }
     }
 
-    private static void cadastrarAluno() {
+    private static void listarAlunos() {
+    }
+
+    private static void buscarAluno() {
+    }
+
+    private static void cadastrarAluno(AlunoService alunoService) {
         System.out.println("\n--- CADASTRAR ALUNO ---");
         Aluno aluno = new Aluno(
                 lerString("Nome"),
                 lerString("CPF"),
                 lerString("Telefone"),
                 lerString("Email"),
-                lerData("Data de Nascimento (AAAA-MM-DD)"),
+                lerData(),
                 lerString("Responsável"),
                 lerString("Observações de Saúde") // Parâmetro faltante adicionado
         );
@@ -101,7 +115,7 @@ public class Main {
             System.out.println("5. Listar Professores");
             System.out.println("0. Voltar");
 
-            int opcao = lerInt("Escolha uma opção", 0, 5);
+            int opcao = lerInt(5);
             if (opcao == 0) return;
 
             try {
@@ -116,6 +130,9 @@ public class Main {
                 System.out.println("Erro: " + e.getMessage());
             }
         }
+    }
+
+    private static void cadastrarProfessor() {
     }
 
     private static void buscarProfessor() {
@@ -170,7 +187,7 @@ public class Main {
             System.out.println("5. Listar Modalidades");
             System.out.println("0. Voltar");
 
-            int opcao = lerInt("Escolha uma opção", 0, 5);
+            int opcao = lerInt(5);
             if (opcao == 0) return;
 
             try {
@@ -226,48 +243,7 @@ public class Main {
         modalidadeService.listarTodos().forEach(System.out::println);
     }
 
-    // Métodos para Gerenciamento de Turmas (implementados)
-    private static void buscarTurma() {
-        int id = lerInt("Digite o ID da turma");
-        Turma turma = turmaService.buscarPorId(id);
-        if (turma != null) {
-            System.out.println(turma);
-        } else {
-            System.out.println("Turma não encontrada!");
-        }
-    }
-
-    private static void atualizarTurma() {
-        int id = lerInt("Digite o ID da turma");
-        Turma turma = turmaService.buscarPorId(id);
-        if (turma == null) {
-            System.out.println("Turma não encontrada!");
-            return;
-        }
-
-        System.out.println("\n--- ATUALIZAR TURMA ---");
-        turma.setModalidade(modalidadeService.buscarPorId(lerInt("ID da Modalidade (" + turma.getModalidade().getId() + ")")));
-        turma.setProfessor(professorService.buscarPorCpf(lerString("CPF do Professor (" + turma.getProfessor().getCpf() + ")")));
-        turma.setDiaSemana(DayOfWeek.of(lerInt("Dia da semana (1-7)", 1, 7)));
-        turma.setHorario(LocalTime.of(lerInt("Hora", 0, 23), 0));
-        turma.setCapacidadeMaxima(lerInt("Capacidade Máxima (" + turma.getCapacidadeMaxima() + ")"));
-
-        turmaService.atualizar(turma);
-        System.out.println("Turma atualizada com sucesso!");
-    }
-
-    private static void encerrarTurma() {
-        int id = lerInt("Digite o ID da turma");
-        turmaService.encerrar(id);
-        System.out.println("Turma encerrada com sucesso!");
-    }
-
-    private static void listarTurmas() {
-        System.out.println("\n--- LISTA DE TURMAS ---");
-        turmaService.listarTodos().forEach(System.out::println);
-    }
-
-    // Métodos auxiliares (já corretos)
+// Métodos auxiliares (já corretos)
     private static String lerString(String prompt) {
         System.out.print(prompt + ": ");
         return scanner.nextLine();
@@ -284,24 +260,28 @@ public class Main {
         }
     }
 
-    private static int lerInt(String prompt, int min, int max) {
+    private static int lerInt(
+            int max) {
         while (true) {
-            int valor = lerInt(prompt + " (" + min + "-" + max + ")");
-            if (valor >= min && valor <= max) {
+            int valor = lerInt("Escolha uma opção" + " (" + 0 + "-" + max + ")");
+            if (valor >= 0 && valor <= max) {
                 return valor;
             }
-            System.out.println("Valor deve estar entre " + min + " e " + max);
+            System.out.println("Valor deve estar entre " + 0 + " e " + max);
         }
     }
 
-    private static LocalDate lerData(String prompt) {
+    private static <DateTimeParseException extends Throwable> LocalDate lerData() {
         while (true) {
             try {
-                System.out.print(prompt + ": ");
+                System.out.print("Data de Nascimento (AAAA-MM-DD)" + ": ");
                 return LocalDate.parse(scanner.nextLine());
             } catch (DateTimeParseException e) {
                 System.out.println("Formato inválido! Use AAAA-MM-DD");
             }
         }
     }
+}
+
+public void main() {
 }
