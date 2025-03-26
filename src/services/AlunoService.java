@@ -1,56 +1,36 @@
 package services;
 
-import interfaces.repositories.IAlunoRepository;
-import interfaces.services.IAlunoService;
+import interfaces.IAlunoService;
+import interfaces.IAlunoRepository;
 import entities.Aluno;
-import java.util.List;
 
 public class AlunoService implements IAlunoService {
-    private final IAlunoRepository repository;
+    private IAlunoRepository repository;
 
     public AlunoService(IAlunoRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void cadastrarAluno(Aluno aluno) {
-        if (repository.buscarPorCpf(aluno.getCpf()) != null) {
-            throw new IllegalArgumentException("Aluno já cadastrado com este CPF");
-        }
+    public void cadastrar(Aluno aluno) {
         repository.salvar(aluno);
     }
 
     @Override
-    public Aluno buscarAlunoPorCpf(String cpf) {
-        return repository.buscarPorCpf(cpf);
+    public Aluno buscar(String matricula) {
+        return repository.listar().stream()
+            .filter(a -> a.getMatricula().equals(matricula))
+            .findFirst()
+            .orElse(null);
     }
 
     @Override
-    public void atualizarAluno() {
-        if (repository.buscarPorCpf(aluno.getCpf()) == null) {
-            throw new IllegalArgumentException("Aluno não encontrado");
-        }
+    public void atualizar(Aluno aluno) {
         repository.alterar(aluno);
     }
 
     @Override
-    public void removerAluno(String cpf) {
-        repository.remover(cpf);
-    }
-
-    @Override
-    public List<Aluno> listarTodosAlunos() {
-        return repository.listarTodos();
-    }
-
-    public IAlunoRepository getRepository() {
-        return null;
-    }
-
-    public void cadastrar(Aluno aluno) {
-
-    }
-
-    public void atualizarAluno() {
+    public void remover(String matricula) {
+        repository.remover(matricula);
     }
 }
