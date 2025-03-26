@@ -1,12 +1,11 @@
-package interfaces.repositories;
+package interfaces;
 
 import entities.Aluno;
 import java.util.List;
 
 public interface IAlunoRepository {
     void salvar(Aluno aluno);
-    void remover(String cpf);
+    void remover(String matricula);
     void alterar(Aluno aluno);
-    List<Aluno> listarTodos();
-    Aluno buscarPorCpf(String cpf);
+    List<Aluno> listar();
 }
