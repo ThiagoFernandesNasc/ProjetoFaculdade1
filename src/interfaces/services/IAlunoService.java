@@ -1,12 +1,10 @@
-package interfaces.services;
+package interfaces;
 
 import entities.Aluno;
-import java.util.List;
 
 public interface IAlunoService {
-    void cadastrarAluno(Aluno aluno);
-    Aluno buscarAlunoPorCpf(String cpf);
-    void atualizarAluno();
-    void removerAluno(String cpf);
-    List<Aluno> listarTodosAlunos();
+    void cadastrar(Aluno aluno);
+    Aluno buscar(String matricula);
+    void atualizar(Aluno aluno);
+    void remover(String matricula);
 }
