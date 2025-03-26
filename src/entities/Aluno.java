@@ -1,53 +1,28 @@
 package entities;
 
-import java.time.LocalDate;
+public class Aluno {
+    private String matricula;
+    private String nome;
+    private String curso;
 
-public class Aluno extends Pessoa {
-    private LocalDate dataNascimento;
-    private String responsavel;
-    private String observacoesSaude;
-
-    public Aluno() {
+    // Construtores
+    public Aluno() {}
+    public Aluno(String matricula, String nome, String curso) {
+        this.matricula = matricula;
+        this.nome = nome;
+        this.curso = curso;
     }
 
-    public Aluno(String nome, String cpf, String telefone, String email,
-                 LocalDate dataNascimento, String responsavel, String observacoesSaude) {
-        super(nome, cpf, telefone, email);
-        this.dataNascimento = dataNascimento;
-        this.responsavel = responsavel;
-        this.observacoesSaude = observacoesSaude;
-    }
+    // Getters e Setters
+    public String getMatricula() { return matricula; }
+    public void setMatricula(String matricula) { this.matricula = matricula; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getCurso() { return curso; }
+    public void setCurso(String curso) { this.curso = curso; }
 
     @Override
-    public void exibirInformacoes() {
-        System.out.println("Aluno: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.println("Data Nascimento: " + dataNascimento);
-        System.out.println("Responsável: " + responsavel);
-    }
-
-    // Getters e Setters específicos
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public String getResponsavel() {
-        return responsavel;
-    }
-
-    public void setResponsavel(String responsavel) {
-        this.responsavel = responsavel;
-    }
-
-    public String getObservacoesSaude() {
-        return observacoesSaude;
-    }
-
-    public void setObservacoesSaude(String observacoesSaude) {
-        this.observacoesSaude = observacoesSaude;
+    public String toString() {
+        return "Aluno [matricula=" + matricula + ", nome=" + nome + ", curso=" + curso + "]";
     }
 }
