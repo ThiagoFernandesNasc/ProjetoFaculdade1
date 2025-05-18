@@ -1,12 +1,10 @@
-package interfaces.services;
+package interfaces;
 
-import entities.Professor;
-import java.util.List;
+import entidades.Professor;
 
-public interface IProfessorService {
-    void contratarProfessor(Professor professor);
-    Professor buscarProfessorPorCpf(String cpf);
-    void atualizarProfessor(Professor professor);
-    void demitirProfessor(String cpf);
-    List<Professor> listarTodosProfessores();
+public interface IProfessorServico {
+    void cadastrar(Professor professor);
+    Professor buscarPorId(int id);
+    void atualizar(Professor professor);
+    void remover(int id);
 }
