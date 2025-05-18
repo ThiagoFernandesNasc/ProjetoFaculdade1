@@ -1,49 +1,37 @@
-package services;
+package servicos;
 
-import interfaces.repositories.IProfessorRepository;
-import interfaces.services.IProfessorService;
-import entities.Professor;
-import java.util.List;
+import entidades.Professor;
+import interfaces.IProfessorRepositorio;
+import interfaces.IProfessorServico;
 
-public class ProfessorService implements IProfessorService {
-    private final IProfessorRepository repository;
+public class ProfessorServico implements IProfessorServico {
 
-    public ProfessorService(IProfessorRepository repository) {
-        this.repository = repository;
+    private IProfessorRepositorio repositorio;
+
+    public ProfessorServico(IProfessorRepositorio repositorio) {
+        this.repositorio = repositorio;
     }
 
     @Override
-    public void contratarProfessor(Professor professor) {
-        if (repository.buscarPorCpf(professor.getCpf()) != null) {
-            throw new IllegalArgumentException("Professor já cadastrado com este CPF");
+    public void cadastrar(Professor professor) {
+        repositorio.salvar(professor);
+    }
+
+    @Override
+    public Professor buscarPorId(int id) {
+        for (Professor p : repositorio.listar()) {
+            if (p.getId() == id) return p;
         }
-        repository.salvar(professor);
-    }
-
-    @Override
-    public Professor buscarProfessorPorCpf(String cpf) {
-        return repository.buscarPorCpf(cpf);
-    }
-
-    @Override
-    public void atualizarProfessor(Professor professor) {
-        if (repository.buscarPorCpf(professor.getCpf()) == null) {
-            throw new IllegalArgumentException("Professor não encontrado");
-        }
-        repository.alterar(professor);
-    }
-
-    @Override
-    public void demitirProfessor(String cpf) {
-        repository.remover(cpf);
-    }
-
-    @Override
-    public List<Professor> listarTodosProfessores() {
-        return repository.listarTodos();
-    }
-
-    public IProfessorRepository getRepository() {
         return null;
+    }
+
+    @Override
+    public void atualizar(Professor professor) {
+        repositorio.alterar(professor);
+    }
+
+    @Override
+    public void remover(int id) {
+        repositorio.remover(id);
     }
 }
