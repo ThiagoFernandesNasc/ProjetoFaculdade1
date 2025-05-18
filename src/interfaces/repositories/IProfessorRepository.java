@@ -1,12 +1,11 @@
-package interfaces.repositories;
+package interfaces;
 
-import entities.Professor;
+import entidades.Professor;
 import java.util.List;
 
-public interface IProfessorRepository {
+public interface IProfessorRepositorio {
     void salvar(Professor professor);
-    void remover(String cpf);
+    void remover(int id);
     void alterar(Professor professor);
-    List<Professor> listarTodos();
-    Professor buscarPorCpf(String cpf);
+    List<Professor> listar();
 }
