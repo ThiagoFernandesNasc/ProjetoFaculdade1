@@ -1,24 +1,25 @@
-package entidades;
+package entities;
 
-public class Pessoa {
-    private int id;
-    private String nome;
+public abstract class Pessoa {
+    protected String nome;
+    protected String cpf;
+    protected String telefone;
+    protected String email;
 
-    public Pessoa() {}
+    public Pessoa() {
+    }
 
-    public Pessoa(int id, String nome) {
-        this.id = id;
+    public Pessoa(String nome, String cpf, String telefone, String email) {
         this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.email = email;
     }
 
-    public int getId() {
-        return id;
-    }
+    // Métodos abstratos
+    public abstract void exibirInformacoes();
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    // Getters e Setters
     public String getNome() {
         return nome;
     }
@@ -27,8 +28,27 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    @Override
-    public String toString() {
-        return "Pessoa{id=" + id + ", nome='" + nome + "'}";
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
