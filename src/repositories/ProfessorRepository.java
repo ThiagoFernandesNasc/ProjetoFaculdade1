@@ -1,43 +1,64 @@
-package repositories;
+package repositorios;
 
-import interfaces.repositories.IProfessorRepository;
-import entities.Professor;
+import entidades.Professor;
+import interfaces.IProfessorRepositorio;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfessorRepository implements IProfessorRepository {
-    private List<Professor> professores = new ArrayList<>();
+public class ProfessorRepositorio implements IProfessorRepositorio {
 
-    @Override
-    public void salvar(Professor professor) {
-        professores.add(professor);
-    }
+    private Node head;
 
-    @Override
-    public void remover(String cpf) {
-        professores.removeIf(p -> p.getCpf().equals(cpf));
-    }
+    private class Node {
+        Professor professor;
+        Node next;
 
-    @Override
-    public void alterar(Professor professor) {
-        for (int i = 0; i < professores.size(); i++) {
-            if (professores.get(i).getCpf().equals(professor.getCpf())) {
-                professores.set(i, professor);
-                break;
-            }
+        Node(Professor professor) {
+            this.professor = professor;
         }
     }
 
     @Override
-    public List<Professor> listarTodos() {
-        return new ArrayList<>(professores);
+    public void salvar(Professor professor) {
+        Node novo = new Node(professor);
+        novo.next = head;
+        head = novo;
     }
 
     @Override
-    public Professor buscarPorCpf(String cpf) {
-        return professores.stream()
-                .filter(p -> p.getCpf().equals(cpf))
-                .findFirst()
-                .orElse(null);
+    public void remover(int id) {
+        Node atual = head, anterior = null;
+        while (atual != null) {
+            if (atual.professor.getId() == id) {
+                if (anterior == null) head = atual.next;
+                else anterior.next = atual.next;
+                return;
+            }
+            anterior = atual;
+            atual = atual.next;
+        }
+    }
+
+    @Override
+    public void alterar(Professor professor) {
+        Node atual = head;
+        while (atual != null) {
+            if (atual.professor.getId() == professor.getId()) {
+                atual.professor = professor;
+                return;
+            }
+            atual = atual.next;
+        }
+    }
+
+    @Override
+    public List<Professor> listar() {
+        List<Professor> lista = new ArrayList<>();
+        Node atual = head;
+        while (atual != null) {
+            lista.add(atual.professor);
+            atual = atual.next;
+        }
+        return lista;
     }
 }
