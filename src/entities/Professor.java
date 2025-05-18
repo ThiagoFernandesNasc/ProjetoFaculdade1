@@ -1,54 +1,44 @@
-package entities;
+package entidades;
 
-import java.time.LocalDate;
-import java.util.List;
+public class Professor {
+    private int id;
+    private String nome;
+    private String disciplina;
 
-public class Professor extends Pessoa {
-    private String formacao;
-    private List<String> especialidades;
-    private LocalDate dataContratacao;
+    public Professor() {}
 
-    public Professor() {
+    public Professor(int id, String nome, String disciplina) {
+        this.id = id;
+        this.nome = nome;
+        this.disciplina = disciplina;
     }
 
-    public Professor(String nome, String cpf, String telefone, String email,
-                     String formacao, List<String> especialidades, LocalDate dataContratacao) {
-        super(nome, cpf, telefone, email);
-        this.formacao = formacao;
-        this.especialidades = especialidades;
-        this.dataContratacao = dataContratacao;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(String disciplina) {
+        this.disciplina = disciplina;
     }
 
     @Override
-    public void exibirInformacoes() {
-        System.out.println("Professor: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.println("Formação: " + formacao);
-        System.out.println("Especialidades: " + String.join(", ", especialidades));
-    }
-
-    // Getters e Setters específicos
-    public String getFormacao() {
-        return formacao;
-    }
-
-    public void setFormacao(String formacao) {
-        this.formacao = formacao;
-    }
-
-    public List<String> getEspecialidades() {
-        return especialidades;
-    }
-
-    public void setEspecialidades(List<String> especialidades) {
-        this.especialidades = especialidades;
-    }
-
-    public LocalDate getDataContratacao() {
-        return dataContratacao;
-    }
-
-    public void setDataContratacao(LocalDate dataContratacao) {
-        this.dataContratacao = dataContratacao;
+    public String toString() {
+        return "Professor{id=" + id + ", nome='" + nome + "', disciplina='" + disciplina + "'}";
     }
 }
